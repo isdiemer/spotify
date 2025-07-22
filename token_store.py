@@ -6,7 +6,7 @@ import time
 from typing import Optional, Protocol, TypedDict, runtime_checkable
 import fcntl  # only works on Unix‑likes; OK for dev. Windows users see note below.
 
-# DTO for token bundle
+
 class TokenBundle(TypedDict):
     access_token: str
     refresh_token: str
@@ -33,11 +33,11 @@ class FileTokenStore:
             except json.JSONDecodeError:
                 return None
 
-    def set(self,key: str,bundle: TokenBundle):
+    def set(self,key : str,value: TokenBundle):
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.path.open("w") as file:
             fcntl.flock(file, fcntl.LOCK_EX)
-            json.dump(bundle, file)
+            json.dump(value, file)
             file.flush()
             file.truncate()  # Ensure no old data remains
             fcntl.flock(file, fcntl.LOCK_UN)
