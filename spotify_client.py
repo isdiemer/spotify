@@ -73,3 +73,12 @@ class SpotifyClient:
         Get the currently playing track on Spotify.
         """
         return self._get("/me/player/currently-playing")
+
+    def search_tracks(self, query: str, limit: int = 5) -> Any:
+        """Search for tracks matching a query string."""
+        params = {"q": query, "type": "track", "limit": limit}
+        return self._get("/search", params=params)
+
+    def get_track(self, track_id: str) -> Any:
+        """Retrieve a track by Spotify ID."""
+        return self._get(f"/tracks/{track_id}")
